@@ -7,6 +7,72 @@ public class Piece : MonoBehaviour
     public bool isWhite;
     public bool isKing;
 
+    public bool IsForceToMove(Piece[,] board, int x, int y)
+    {
+        if (isWhite || isKing)
+        {
+            //Top Left
+            if(x>=2 && y<=5)
+            {
+                Piece p = board[x-1, y+1];
+                //Check if there is a piece to jump over
+                if(p != null && p.isWhite != isWhite)
+                {   
+                    //Check if there is a space to land
+                    if(board[x-2, y+2] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            //Top Right
+            if(x<=5 && y<=5)
+            {
+                Piece p = board[x+1, y+1];
+                //Check if there is a piece to jump over
+                if(p != null && p.isWhite != isWhite)
+                {   
+                    //Check if there is a space to land
+                    if(board[x+2, y+2] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        if(!isWhite || isKing){
+            //Bottom Left
+            if(x>=2 && y>=2)
+            {
+                Piece p = board[x-1, y-1];
+                //Check if there is a piece to jump over
+                if(p != null && p.isWhite != isWhite)
+                {   
+                    //Check if there is a space to land
+                    if(board[x-2, y-2] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            //Bottom Right
+            if(x<=5 && y>=2)
+            {
+                Piece p = board[x+1, y-1];
+                //Check if there is a piece to jump over
+                if(p != null && p.isWhite != isWhite)
+                {   
+                    //Check if there is a space to land
+                    if(board[x+2, y-2] == null)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public bool ValidMove(Piece[,] board, int x1, int y1, int x2, int y2)
     {
         //Check if moving on top of another piece
