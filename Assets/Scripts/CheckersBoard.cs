@@ -33,7 +33,7 @@ public class CheckersBoard : MonoBehaviour
     private void Update()
     {
         UpdateMouseOver();
-
+        if((isWhite)?isWhiteTurn:!isWhiteTurn)
         {
             //if it's our turn
             int x = (int)mouseOver.x;
@@ -228,13 +228,36 @@ public class CheckersBoard : MonoBehaviour
         }
 
         isWhiteTurn = !isWhiteTurn;
+        //locally change the turn
+        isWhite = !isWhite;
         hasKilled = false;
         CheckVictory();
     }
 
     private void CheckVictory()
     {
-        //  
+        var pawns = FindObjectsOfType<Piece>();
+        bool hasWhite = false;
+        bool hasBlack = false;
+        for (int i = 0; i < pawns.Length; i++)
+        {
+            if (pawns[i].isWhite)
+                hasWhite = true;
+            else
+                hasBlack = true;
+        }
+        if(!hasWhite)
+            Victory(false);
+        if(!hasBlack)
+            Victory(true);
+    }
+
+    private void Victory(bool isWhite)
+    {
+     if(isWhite)
+            Debug.Log("White team wins");
+        else
+            Debug.Log("Black team wins");
     }
 
     private List<Piece> ScanForPossibleMove(Piece p, int x, int y)
