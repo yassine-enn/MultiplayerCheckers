@@ -201,8 +201,31 @@ public class CheckersBoard : MonoBehaviour
 
     private void EndTurn()
     {
+        int x = (int)endDrag.x;
+        int y = (int)endDrag.y;
+
+        //Promote piece to king
+        if (selectedPiece != null)
+        {
+            if(selectedPiece.isWhite && !selectedPiece.isKing && y == 7)
+            {
+                selectedPiece.isKing = true;
+                selectedPiece.transform.Rotate(Vector3.right * 180);
+            }
+            else if(!selectedPiece.isWhite && !selectedPiece.isKing && y == 0)
+            {
+                selectedPiece.isKing = true;
+                selectedPiece.transform.Rotate(Vector3.right * 180);
+            }
+        }
+
         startDrag = Vector2.zero;
         selectedPiece = null;
+
+        if(ScanForPossibleMove(selectedPiece, x, y).Count != 0 && hasKilled)
+        {
+            return;
+        }
 
         isWhiteTurn = !isWhiteTurn;
         hasKilled = false;
@@ -214,6 +237,17 @@ public class CheckersBoard : MonoBehaviour
         //  
     }
 
+    private List<Piece> ScanForPossibleMove(Piece p, int x, int y)
+    {
+        forcedPieces = new List<Piece>();
+
+        if(pieces[x,y].IsForceToMove(pieces, x, y))
+        {
+            forcedPieces.Add(pieces[x,y]);
+        }
+
+        return forcedPieces;
+    }
     private List<Piece> ScanForPossibleMove()
     {
         forcedPieces = new List<Piece>();
